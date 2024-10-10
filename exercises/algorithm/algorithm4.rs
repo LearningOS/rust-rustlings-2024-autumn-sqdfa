@@ -3,7 +3,6 @@
 	This problem requires you to implement a basic interface for a binary tree
 */
 
-//I AM NOT DONE
 use std::cmp::Ordering;
 use std::fmt::Debug;
 
@@ -51,12 +50,75 @@ where
     // Insert a value into the BST
     fn insert(&mut self, value: T) {
         //TODO
+        // match self.root{
+        //     None =>{
+        //         self.root=Some(Box::new(TreeNode::new(value)));
+        //         return
+        //     },
+        //     Some(ref mut x) =>{
+        //         let mut node =x.as_mut();
+        //         //no 
+        //         loop{
+        //             if node.value==value{
+        //                 return 
+        //             }else if node.value>value{
+        //                 match node.right{
+        //                     None=>{
+        //                         node.right=Some(Box::new(TreeNode::new(value)));
+        //                         return
+        //                     },
+        //                     Some(ref mut p)=>{
+        //                         node=p.as_mut();
+        //                     }
+        //                 }
+    
+        //             }else{
+        //                 match node.left {
+        //                     None => {
+        //                         node.left = Some(Box::new(TreeNode::new(value)));
+        //                         return;
+        //                     },
+        //                     Some(ref mut p) => {
+        //                         node = p.as_mut();
+        //                     }
+        //                 }
+        //             }
+                   
+        //         }
+        //     }
+                
+        // }
+        let mut  r= &mut self.root;
+        while let Some(node)=r{
+            if node.value==value{
+                return 
+            }else if node.value>value{
+                r=&mut node.right;
+            }else{
+                r=&mut node.left;
+            }
+        }
+        *r=Some(Box::new(TreeNode::new(value)));
     }
+        
+    
+    
 
     // Search for a value in the BST
     fn search(&self, value: T) -> bool {
         //TODO
-        true
+        let mut  r= &(self.root);
+        while let Some(node)=r{
+            
+            if node.value==value{
+                return true
+            }else if node.value>value{
+                r=&node.right;
+            }else{
+                r=&node.left;
+            }
+        }
+        false
     }
 }
 

@@ -2,7 +2,7 @@
 	heap
 	This question requires you to implement a binary heap function
 */
-// I AM NOT DONE
+
 
 use std::cmp::Ord;
 use std::default::Default;
@@ -38,6 +38,19 @@ where
 
     pub fn add(&mut self, value: T) {
         //TODO
+        self.items.push(value);
+        self.count+=1;
+        let mut idx=self.count;
+        
+        while self.count>1 {
+            let parent_idx = self.parent_idx(idx); 
+            if parent_idx>0&&(self.comparator)(&self.items[idx],&self.items[parent_idx]){
+                self.items.swap(idx,parent_idx);
+                idx=parent_idx;
+            }else{
+                break;
+            }
+        }
     }
 
     fn parent_idx(&self, idx: usize) -> usize {
@@ -58,7 +71,13 @@ where
 
     fn smallest_child_idx(&self, idx: usize) -> usize {
         //TODO
-		0
+        let left = self.left_child_idx(idx);
+        let right = self.right_child_idx(idx);
+        if right <= self.count && (self.comparator)(&self.items[right], &self.items[left]) {
+            right
+        } else {
+            left
+        }
     }
 }
 
@@ -85,7 +104,28 @@ where
 
     fn next(&mut self) -> Option<T> {
         //TODO
-		None
+        if self.count==0{
+            return None
+        }
+		let top = self.items.swap_remove(1); //移除一个元素，并且用向量的最后一个元素来替换这个位置
+        self.count-=1;
+        if !self.is_empty(){
+            let mut idx =1;
+            while self.children_present(idx) {
+                let mut child_idx = self.left_child_idx(idx);
+                if child_idx < self.count && (self.comparator)(&self.items[self.right_child_idx(idx)], &self.items[child_idx]) {
+                    child_idx = self.right_child_idx(idx);
+                }
+
+                if !(self.comparator)(&self.items[child_idx], &self.items[idx]) {
+                    break;
+                }
+
+                self.items.swap(idx, child_idx);
+                idx = child_idx;
+            }
+        }
+        Some(top)
     }
 }
 
